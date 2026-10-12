@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagal & Muhtarma's Care Portal 🤍</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-purple-100 to-indigo-200 min-h-screen text-gray-800 p-4 sm:p-6 flex items-center justify-center">
+
+    <!-- PASSWORD LOCK SCREEN -->
+    <div id="lockScreen" class="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="glass p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center space-y-4 border border-white/60">
+            <div class="text-4xl">🔐</div>
+            <h2 class="text-2xl font-bold text-purple-800">Protected Space</h2>
+            <p class="text-xs text-gray-600">Please enter the secret password to unlock this care portal 🤍</p>
+            <form id="lockForm" class="space-y-3">
+                <input type="password" id="passInput" placeholder="Enter password..." required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/70 text-center tracking-widest text-sm">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium p-3 rounded-xl shadow transition duration-200">
+                    Unlock Portal ✨
+                </button>
+            </form>
+            <p id="errorMsg" class="text-xs text-rose-500 font-medium hidden">Incorrect password! Try again.</p>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTENT (Hidden by default until unlocked) -->
+    <div id="mainApp" class="max-w-6xl mx-auto w-full hidden">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-purple-700 drop-shadow-sm">Pagal & Muhtarma Care Portal 🌸</h1>
+            <p class="text-gray-600 mt-1">Meals, Health Tracker & Sweet Chat — live synced 🤍</p>
+        </header>
+
+        <!-- Main Layout Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Column 1: Input Form Section -->
+            <div class="glass p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold text-purple-800 mb-4 flex items-center gap-2">
+                        ✨ Add Today's Update
+                    </h2>
+                    <form id="careForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Who is adding this? 👤</label>
+                            <select id="author" required class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50 font-medium text-purple-700">
+                                <option value="Pagal 🤪">Pagal (پاگل)</option>
+                                <option value="Muhtarma 🤍">Muhtarma (محترمہ جی)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Select Date</label>
+                            <input type="date" id="entryDate" required class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">🍳 Breakfast</label>
+                            <input type="text" id="breakfast" placeholder="What did you eat?" class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">🍲 Lunch</label>
+                            <input type="text" id="lunch" placeholder="Lunch details..." class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">🌙 Dinner</label>
+                            <input type="text" id="dinner" placeholder="Dinner details..." class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">💊 Health & Medicine / Water</label>
+                            <input type="text" id="health" placeholder="Vitamins, water intake, medicine..." class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">😊 Mood / Vibe</label>
+                            <select id="mood" class="mt-1 w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/50">
+                                <option value="😊 Happy & Energetic">😊 Happy & Energetic</option>
+                                <option value="😌 Calm & Relaxed">😌 Calm & Relaxed</option>
+                                <option value="😴 Tired / Sleepy">😴 Tired / Sleepy</option>
+                                <option value="🥺 Little Low / Needs Extra Care">🥺 Little Low / Needs Extra Care</option>
+                                <option value="✨ Excited">✨ Excited</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium p-3 rounded-xl shadow-lg transition duration-200">
+                            Save & Sync Live 🚀
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Reset Database Button -->
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <button id="resetBtn" class="w-full bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium p-2.5 rounded-xl shadow transition duration-200 flex items-center justify-center gap-2">
+                        🗑️ Reset / Clear All History
+                    </button>
+                </div>
+            </div>
+
+            <!-- Column 2: Live Feed / Care History Section -->
+            <div class="glass p-6 rounded-2xl shadow-xl flex flex-col h-[700px]">
+                <h2 class="text-xl font-semibold text-purple-800 mb-4 flex items-center gap-2">
+                    📜 Live Shared History
+                </h2>
+                <div id="historyList" class="overflow-y-auto space-y-4 pr-2 flex-grow">
+                    <p class="text-gray-500 text-center mt-32">Loading live entries...</p>
+                </div>
+            </div>
+
+            <!-- Column 3: Personal Sweet Chat Section -->
+            <div class="glass p-6 rounded-2xl shadow-xl flex flex-col h-[700px]">
+                <h2 class="text-xl font-semibold text-purple-800 mb-4 flex items-center gap-2">
+                    💬 Sweet Talk Box
+                </h2>
+                <!-- Chat Messages Feed -->
+                <div id="chatList" class="overflow-y-auto space-y-3 pr-2 flex-grow mb-4 bg-white/40 p-3 rounded-xl border border-purple-100">
+                    <p class="text-gray-400 text-center text-sm mt-32">No messages yet. Say something sweet! 🤍</p>
+                </div>
+                <!-- Chat Input Form -->
+                <form id="chatForm" class="space-y-2">
+                    <input type="text" id="chatMessage" placeholder="Type a sweet message..." required class="w-full p-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-400 outline-none bg-white/60 text-sm">
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white text-sm font-medium p-2.5 rounded-xl shadow transition duration-200">
+                        Send Message 💌
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Firebase SDKs & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Your exact Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCERnLuU_49kZ3YpFJVlRj73rrid39Eizw",
+            authDomain: "pagal-muhtarma-care.firebaseapp.com",
+            projectId: "pagal-muhtarma-care",
+            storageBucket: "pagal-muhtarma-care.firebasestorage.app",
+            messagingSenderId: "909875307388",
+            appId: "1:909875307388:web:ec6dc453ef356af60cbaf9",
+            measurementId: "G-ZGSV5CWZ3Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Password Lock Logic
+        const lockForm = document.getElementById('lockForm');
+        const lockScreen = document.getElementById('lockScreen');
+        const mainApp = document.getElementById('mainApp');
+        const passInput = document.getElementById('passInput');
+        const errorMsg = document.getElementById('errorMsg');
+
+        lockForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (passInput.value.trim() === "apni care") {
+                lockScreen.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+                document.getElementById('entryDate').valueAsDate = new Date();
+            } else {
+                errorMsg.classList.remove('hidden');
+                passInput.value = "";
+            }
+        });
+
+        // 1. Handle Care Form Submission
+        const form = document.getElementById('careForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const entryData = {
+                author: document.getElementById('author').value,
+                date: document.getElementById('entryDate').value,
+                breakfast: document.getElementById('breakfast').value || 'Not added',
+                lunch: document.getElementById('lunch').value || 'Not added',
+                dinner: document.getElementById('dinner').value || 'Not added',
+                health: document.getElementById('health').value || 'All good',
+                mood: document.getElementById('mood').value,
+                timestamp: new Date()
+            };
+
+            try {
+                await addDoc(collection(db, "muhtarma_care"), entryData);
+                form.reset();
+                document.getElementById('entryDate').valueAsDate = new Date();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("Error saving data.");
+            }
+        });
+
+        // 2. Real-time listener for Care History
+        const historyContainer = document.getElementById('historyList');
+        const qHistory = query(collection(db, "muhtarma_care"), orderBy("timestamp", "desc"));
+
+        onSnapshot(qHistory, (snapshot) => {
+            historyContainer.innerHTML = "";
+            if (snapshot.empty) {
+                historyContainer.innerHTML = `<p class="text-gray-500 text-center mt-32">No entries yet. Add the first one! ✨</p>`;
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const card = document.createElement('div');
+                const isPagal = data.author && data.author.includes("Pagal");
+                const badgeColor = isPagal ? "bg-indigo-100 text-indigo-700" : "bg-pink-100 text-pink-700";
+
+                card.className = "bg-white/80 p-4 rounded-xl shadow-sm border border-purple-100 space-y-2";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-semibold border-b pb-1">
+                        <span class="${badgeColor} px-2.5 py-1 rounded-full font-bold">👤 ${data.author || 'Member'}</span>
+                        <span class="text-gray-500">📅 ${data.date}</span>
+                    </div>
+                    <div class="text-sm space-y-1 text-gray-700 pt-1">
+                        <p><strong>🍳 Breakfast:</strong> ${data.breakfast}</p>
+                        <p><strong>🍲 Lunch:</strong> ${data.lunch}</p>
+                        <p><strong>🌙 Dinner:</strong> ${data.dinner}</p>
+                        <p><strong>💊 Health:</strong> ${data.health}</p>
+                        <p class="pt-1 text-xs text-purple-600 font-medium"><strong>Mood:</strong> ${data.mood}</p>
+                    </div>
+                `;
+                historyContainer.appendChild(card);
+            });
+        });
+
+        // 3. Handle Chat Form Submission
+        const chatForm = document.getElementById('chatForm');
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageText = document.getElementById('chatMessage').value;
+            const author = document.getElementById('author').value;
+
+            try {
+                await addDoc(collection(db, "muhtarma_chat"), {
+                    author: author,
+                    message: messageText,
+                    timestamp: new Date()
+                });
+                document.getElementById('chatMessage').value = "";
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
+        });
+
+        // 4. Real-time listener for Chat Box
+        const chatContainer = document.getElementById('chatList');
+        const qChat = query(collection(db, "muhtarma_chat"), orderBy("timestamp", "asc"));
+
+        onSnapshot(qChat, (snapshot) => {
+            chatContainer.innerHTML = "";
+            if (snapshot.empty) {
+                chatContainer.innerHTML = `<p class="text-gray-400 text-center text-sm mt-32">No messages yet. Say something sweet! 🤍</p>`;
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const bubble = document.createElement('div');
+                const isPagal = data.author && data.author.includes("Pagal");
+                
+                bubble.className = `p-3 rounded-xl text-sm shadow-sm ${isPagal ? 'bg-indigo-50 border border-indigo-100 ml-2' : 'bg-pink-50 border border-pink-100 mr-2'}`;
+                bubble.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-bold text-purple-700 mb-1">
+                        <span>${data.author}</span>
+                    </div>
+                    <p class="text-gray-700">${data.message}</p>
+                `;
+                chatContainer.appendChild(bubble);
+            });
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
+
+        // 5. Reset / Clear All History Feature
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.addEventListener('click', async () => {
+            if (confirm("Are you sure you want to delete all history records? This cannot be undone! 🗑️")) {
+                try {
+                    const querySnapshot = await getDocs(collection(db, "muhtarma_care"));
+                    const deletePromises = querySnapshot.docs.map((ds) => deleteDoc(doc(db, "muhtarma_care", ds.id)));
+                    await Promise.all(deletePromises);
+                    alert("All care history has been cleared successfully! ✨");
+                } catch (error) {
+                    console.error("Error clearing database:", error);
+                    alert("Failed to reset history.");
+                }
+            }
+        });
+    </script>
+</body>
+</html>
